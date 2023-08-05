@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
-	"github.com/inancgumus/screen"
 	"example.com/encrypt_tui/account"
+	"example.com/encrypt_tui/utils"
 );
 
 func main() {
 	var runVar bool = true
 	for runVar {
-		cleanScreen()
+		utils.ResetTerminal()
 		runMain()
 		exitProcs(&runVar)
 	}
@@ -50,8 +50,7 @@ func runMain() {
 	Show()
 	fmt.Print("\n")
 	fmt.Println("You selected: " + userAccountChallenge)
-	screen.Clear()
-	screen.MoveTopLeft()
+	utils.ResetTerminal()
 	if (userAccountChallenge == "Create a new account") {
 		account.CreateAccount()
 	} else if (userAccountChallenge == "Login to existing account") {
@@ -59,11 +58,6 @@ func runMain() {
 	} else {
 		fmt.Println("An error occured!")
 	}
-}
-
-func cleanScreen() {
-	screen.Clear()
-	screen.MoveTopLeft()
 }
 
 func exitProcs(runIf *bool) {

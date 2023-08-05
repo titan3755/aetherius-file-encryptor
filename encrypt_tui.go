@@ -4,13 +4,20 @@ import (
 	"fmt"
 	"github.com/pterm/pterm"
 	"github.com/pterm/pterm/putils"
+	"github.com/inancgumus/screen"
+	"example.com/encrypt_tui/account"
 );
 
 func main() {
-	ptermInit()
+	var runVar bool = true
+	for runVar {
+		cleanScreen()
+		runMain()
+		exitProcs(&runVar)
+	}
 }
 
-func ptermInit () {
+func runMain() {
 	header := pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgRed))
 	pterm.DefaultCenter.Println(header.Sprint("Aetherius File Encryptor"))
 	pterm.DefaultBigText.WithLetters(
@@ -43,6 +50,29 @@ func ptermInit () {
 	Show()
 	fmt.Print("\n")
 	fmt.Println("You selected: " + userAccountChallenge)
-	fmt.Println("\n\npress any key to continue ...")
-	fmt.Scanln()
+	screen.Clear()
+	screen.MoveTopLeft()
+	if (userAccountChallenge == "Create a new account") {
+		account.CreateAccount()
+	} else if (userAccountChallenge == "Login to existing account") {
+		account.LoginAccount()
+	} else {
+		fmt.Println("An error occured!")
+	}
+}
+
+func cleanScreen() {
+	screen.Clear()
+	screen.MoveTopLeft()
+}
+
+func exitProcs(runIf *bool) {
+	var runState string
+	pterm.DefaultBasicText.WithStyle(
+		pterm.NewStyle(pterm.FgRed),
+	).Print("\n\n> Exit or reset the program? (e/r) ---> ")
+	fmt.Scanln(&runState)
+	if (runState == "e") {
+		*runIf = false
+	}
 }

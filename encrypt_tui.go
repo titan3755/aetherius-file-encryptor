@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/pterm/pterm"
-	"github.com/pterm/pterm/putils"
 	"example.com/encrypt_tui/account"
 	"example.com/encrypt_tui/utils"
 );
@@ -18,11 +17,7 @@ func main() {
 }
 
 func runMain() {
-	header := pterm.DefaultHeader.WithFullWidth().WithBackgroundStyle(pterm.NewStyle(pterm.BgRed))
-	pterm.DefaultCenter.Println(header.Sprint("Aetherius File Encryptor"))
-	pterm.DefaultBigText.WithLetters(
-		putils.LettersFromStringWithStyle("Info Page", pterm.FgLightBlue.ToStyle()),
-	).Render()
+	utils.PtermHeaders("Info Page", pterm.FgLightBlue)
 	pterm.DefaultParagraph.Println("Welcome to Aetherius File Encryptor CLI app! Using this command line application, you can encrypt any text file or any readable non-binary file with on your computer and access them easily with a provided password. This application will not store or withhold any of your passwords or personal information and the code is free for anyone to inspect and find security vulnerabilities.")
 	pterm.DefaultParagraph.Println()
 	pterm.DefaultParagraph.Println("By using this app, you will be able to encrypt your readable non-binary files using different encryption algorithms. This app is still in development, so only 2 encryption modes will be available at first. They are listed below.")

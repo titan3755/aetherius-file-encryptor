@@ -1,8 +1,11 @@
 package utils
 
-import "unicode"
+import (
+	"unicode"
+)
 
 func PasswordVerifier(pass string) (result bool, correction string) {
+	var symArray = [...]string{"!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "[", "]", "\\", "|", ":", "'", "\"", ",", ".", "/", "?"}
 	const lengthErr = "Length of password must be greater than 10 characters!"
 	const upLowNumSymErr = "Password must contain at least one upper case letters, lower case letters, numbers and symbols!"
 	isUpperChar := false
@@ -19,8 +22,12 @@ func PasswordVerifier(pass string) (result bool, correction string) {
 		if unicode.IsNumber(char) {
 			isNumber = true
 		}
-		if unicode.IsSymbol(char) {
-			isSymbol = true
+	}
+	for i := 0; i < len(symArray); i++ {
+		for j := 0; j < len(pass); j++ {
+			if string(pass[j]) == symArray[i] {
+				isSymbol = true
+			}
 		}
 	}
 	if len(pass) < 10 {

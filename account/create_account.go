@@ -5,6 +5,7 @@ import (
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
 	"crypto/sha256"
+	
 )
 
 func CreateAccount() {
@@ -35,4 +36,12 @@ func CreateAccount() {
 	}
 	encrypt := sha256.Sum256([]byte (accPass))
 	pterm.DefaultBasicText.Println("\nYou typed: " + accName + "\nPassHash: " + fmt.Sprintf("%X", encrypt) + "\nPassword: " + accPass)
+}
+
+func directoryCreator() {
+	// to do
+}
+
+func keyCreator() {
+	// to do
 }

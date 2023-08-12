@@ -47,9 +47,19 @@ func runMain() {
 	fmt.Println("You selected: " + userAccountChallenge)
 	utils.ResetTerminal()
 	if (userAccountChallenge == "Create a new account") {
-		account.CreateAccount()
+		dettSucc := utils.Detector()
+		if !dettSucc {
+			fmt.Println("An error occured!")
+		} else {
+			account.CreateAccount()
+		}
 	} else if (userAccountChallenge == "Login to existing account") {
-		account.LoginAccount()
+		dettSucc := utils.Detector()
+		if !dettSucc {
+			fmt.Println("An error occured!")
+		} else {
+			account.LoginAccount()
+		}
 	} else {
 		fmt.Println("An error occured!")
 	}

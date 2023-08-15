@@ -1,13 +1,12 @@
 package account
 
 import (
-	// "crypto/sha256"
+	"crypto/sha256"
 	"fmt"
 	"os"
 	"os/user"
 	"runtime"
 	"strings"
-
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
 )
@@ -39,6 +38,7 @@ func CreateAccount() {
 				).Print("!> " + err + " (try again)\n\n")
 			}
 		}
+		fmt.Print("\n")
 		pterm.Warning.Println("Creating profile ...")
 		dirSuccess := directoryCreator(accName)
 		if !dirSuccess {
@@ -49,7 +49,20 @@ func CreateAccount() {
 				continue
 			}
 		}
-		keyCreator(accName, accPass)
+		pterm.Warning.Println("Creating key ...")
+		keySuccess := keyCreator(accName, accPass)
+		if !keySuccess {
+			utils.ErrorMsg("There has been an error while attempting to create profile key\nWould you like to attempt account creation again?")
+			intSuccess := utils.Interruptor()
+			if intSuccess {
+				utils.ResetTerminal()
+				continue
+			}
+		}
+		profDetSuccess := profileDetails(accName)
+		if !profDetSuccess {
+			utils.ErrorMsg("There has been an error while attempting to display profile information")
+		}
 		break
 	}
 }
@@ -88,12 +101,53 @@ func directoryCreator(accName string) bool {
 		return false
 	}
 	pterm.Success.Println("Profile directory created successfully!")
-	pterm.DefaultSection.Println("New profile information --->")
-	pterm.Info.Println("Profile name: " + accName + "\nProfile Location: " + docxPath + accName)
 	return true
 }
 
-func keyCreator(profileName string, password string) {
-	fmt.Print("\n\n")
-	pterm.Success.Println("Created key successfully (dummy)")
+func keyCreator(profileName string, password string) bool {
+	u, errUser := user.Current()
+	if errUser != nil {
+		utils.ErrorMsg(errUser.Error())
+		return false
+	}
+	dirPath := u.HomeDir + "\\documents\\aetherius\\" + profileName
+	f, errFile := os.Create(dirPath + "\\key.aetk")
+	if errFile != nil {
+		utils.ErrorMsg(errFile.Error())
+		return false
+	}
+	defer f.Close()
+	encrypted := sha256.New()
+	_, errWriteFirst := encrypted.Write([]byte(password))
+	if errWriteFirst != nil {
+		utils.ErrorMsg(errWriteFirst.Error())
+		return false
+	}
+	encPass := encrypted.Sum(nil)
+	encEncrypt := sha256.New()
+	_, errWriteSecond := encEncrypt.Write([]byte(fmt.Sprintf("%x", encPass)))
+	if errWriteSecond != nil {
+		utils.ErrorMsg(errWriteSecond.Error())
+		return false
+	}
+	encEncryptPass := encEncrypt.Sum(nil)
+	_, errWrite := f.WriteString(fmt.Sprintf("%x", encEncryptPass))
+	if errWrite != nil {
+		utils.ErrorMsg(errWrite.Error())
+		return false
+	}
+	pterm.Success.Println("Created key successfully!")
+	return true
+}
+
+func profileDetails(accName string) bool {
+	u, errUser := user.Current()
+	if errUser != nil {
+		utils.ErrorMsg(errUser.Error())
+		return false
+	}
+	dirPath := u.HomeDir + "\\documents\\aetherius\\" + accName
+	pterm.DefaultSection.Println("New profile information --->")
+	pterm.Info.Println("Profile name: " + accName + "\nProfile Location: " + dirPath)
+	return true
 }

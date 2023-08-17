@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/pterm/pterm"
+
 	"example.com/encrypt_tui/account"
+	"example.com/encrypt_tui/userpages"
 	"example.com/encrypt_tui/utils"
+	"github.com/pterm/pterm"
 );
 
 func main() {
@@ -43,8 +45,6 @@ func runMain() {
 	userAccountChallenge, _ := pterm.DefaultInteractiveSelect.
 	WithOptions([]string{"Create a new account", "Login to existing account"}).
 	Show()
-	fmt.Print("\n")
-	fmt.Println("You selected: " + userAccountChallenge)
 	utils.ResetTerminal()
 	if (userAccountChallenge == "Create a new account") {
 		dettSucc := utils.Detector()
@@ -58,7 +58,10 @@ func runMain() {
 		if !dettSucc {
 			fmt.Println("An error occured!")
 		} else {
-			account.LoginAccount()
+			loggedAccount, success := account.LoginAccount()
+			if success {
+				userpages.UserHome(loggedAccount)
+			}
 		}
 	} else {
 		fmt.Println("An error occured!")

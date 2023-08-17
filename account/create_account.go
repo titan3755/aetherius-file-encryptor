@@ -20,10 +20,19 @@ func CreateAccount() {
 		pterm.DefaultParagraph.Println("")
 		pterm.DefaultParagraph.Printfln("For enhancing security further, if your profile is somehow lost or deleted, no one will ever be able to access your \"Aetherius\" encrypted files as the public and private keys used to encrypt your files will be lost along with your profile folder. A feature to get back your lost profile and keys will be added to this app some time in the future.")
 		pterm.DefaultParagraph.Println("")
-		pterm.DefaultBasicText.WithStyle(
-			pterm.NewStyle(pterm.FgLightBlue),
-		).Print("> Enter your account name ---> ")
-		fmt.Scanln(&accName)
+		for {
+			pterm.DefaultBasicText.WithStyle(
+				pterm.NewStyle(pterm.FgLightBlue),
+			).Print("> Enter your account name ---> ")
+			fmt.Scanln(&accName)
+			if len(accName) < 5 {
+				pterm.DefaultBasicText.WithStyle(
+					pterm.NewStyle(pterm.FgRed),
+				).Print("!> " + "The account name cannot be less than 5 characters!" + " (try again)\n\n")
+				continue
+			}
+			break
+		}
 		for {
 			pterm.DefaultBasicText.WithStyle(
 				pterm.NewStyle(pterm.FgLightBlue),

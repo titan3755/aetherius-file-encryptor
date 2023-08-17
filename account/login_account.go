@@ -5,17 +5,14 @@ import (
 	"os"
 	"os/user"
 	"strings"
-	"example.com/encrypt_tui/userpages"
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
 )
 
-func LoginAccount() {
+func LoginAccount() (string, bool) {
 	var accName string
 	var accPass string
-	utils.PtermHeaders("Login", pterm.FgLightMagenta)
-	pterm.DefaultParagraph.Println("Welcome to the account login page! Here you can login to your account or profile which you created previously via the account creation page.")
-	pterm.DefaultParagraph.Println("")
+	loginHeaders()
 	for {
 		pterm.DefaultBasicText.WithStyle(
 			pterm.NewStyle(pterm.FgLightBlue),
@@ -31,14 +28,22 @@ func LoginAccount() {
 			intSuccess := utils.Interruptor()
 			if intSuccess {
 				utils.ResetTerminal()
+				loginHeaders()
 				continue
 			}
 		} else if accVerificationSuccess {
 			utils.ResetTerminal()
-			userpages.UserHome(accName)
+			return accName, true
 		}
 		break
 	}
+	return "", false
+}
+
+func loginHeaders() {
+	utils.PtermHeaders("Login", pterm.FgLightMagenta)
+	pterm.DefaultParagraph.Println("Welcome to the account login page! Here you can login to your account or profile which you created previously via the account creation page.")
+	pterm.DefaultParagraph.Println("")
 }
 
 func userVerification(accName string, accPass string) bool {

@@ -1,0 +1,5 @@
+package encryptpage
+
+func EncryptPage() {
+	
+}

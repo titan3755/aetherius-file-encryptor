@@ -1,5 +1,5 @@
 package cryptography
 
-func EncryptAes() {
+func EncryptAes(pathName string, encPass string) {
 	
 }

@@ -2,6 +2,9 @@ package userpages
 
 import (
 	"fmt"
+
+	"example.com/encrypt_tui/decryptpage"
+	"example.com/encrypt_tui/encryptpage"
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
 )
@@ -33,6 +36,8 @@ func UserHome(accName string) {
 			Show()
 			fmt.Print("\n")
 			pterm.Success.Println("You have selected p.op: " + userFunctionlityChallenge + " s.op: " + userEncryptionChallenge)
+			utils.ResetTerminal()
+			encryptpage.EncryptPage(accName, userEncryptionChallenge)
 		} else if userFunctionlityChallenge == "Decrypt Files" {
 			pterm.DefaultBasicText.WithStyle(
 				pterm.NewStyle(pterm.FgGreen),
@@ -42,11 +47,13 @@ func UserHome(accName string) {
 			Show()
 			fmt.Print("\n")
 			pterm.Success.Println("You have selected p.op: " + userFunctionlityChallenge + " s.op: " + userDecryptionChallenge)
+			utils.ResetTerminal()
+			decryptpage.DecryptPage(accName, userDecryptionChallenge)
 		} else {
 			fmt.Print("\n")
 			pterm.Warning.Println("Sorry, that feature is not available yet!\nIt will be added in a future update")
 		}
-		fmt.Print("Continue?")
+		fmt.Print("\nReset or Go back to homepage?\nSelecting \"no\" will log you out")
 		intSuccess := utils.Interruptor()
 		if intSuccess {
 			utils.ResetTerminal()

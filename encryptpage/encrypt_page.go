@@ -56,7 +56,14 @@ func EncryptPage(accName string, encType string) {
 		pterm.Warning.Println("Encrypting files...")
 		fmt.Print("\n")
 		if encType == "Encrypt With AES" {
-			cryptography.EncryptAes(pathName, encPass)
+			cipherText, encryptSuccess := cryptography.EncryptAes(pathName, encPass)
+			if cipherText != "" && encryptSuccess {
+				fmt.Print("\n")
+				pterm.Success.Println("Encryption successful!\nCipherText: " + cipherText)
+			} else {
+				fmt.Print("\n")
+				pterm.Error.Println("Encryption was not successful!")
+			}
 		} else if encType == "Encrypt With RSA" {
 			cryptography.EncryptRsa(pathName, encPass)
 		}

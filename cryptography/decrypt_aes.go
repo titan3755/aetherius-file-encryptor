@@ -1,5 +1,5 @@
 package cryptography
 
-func DecryptAes() {
+func DecryptAes(cipherText string, keyString string) {
 	
 }

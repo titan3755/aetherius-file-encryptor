@@ -5,6 +5,7 @@ import (
 )
 
 func FileValidator(path string) bool {
-	_, err := os.Open(path)
+	f, err := os.Open(path)
+	f.Close()
 	return err == nil
 }

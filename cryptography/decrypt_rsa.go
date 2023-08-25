@@ -1,5 +1,5 @@
 package cryptography
 
-func DecryptRsa() {
+func DecryptRsa(pathName string, keyString string) {
 	
 }

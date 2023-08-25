@@ -2,6 +2,7 @@ package decryptpage
 
 import (
 	"fmt"
+	"example.com/encrypt_tui/cryptography"
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
 )
@@ -37,7 +38,23 @@ func DecryptPage(accName string, decType string) {
 				pterm.NewStyle(pterm.FgLightBlue),
 			).Print("> Enter the password for decryption ---> ")
 			fmt.Scanln(&dncPass)
-			break
+			fmt.Print("\n")
+			pterm.Warning.Println("Decrypting files ...")
+			fmt.Print("\n")
+			if decType == "Decrypt AES" {
+				decryptedString, decryptSuccess := cryptography.DecryptAes(pathName, dncPass)
+				if decryptedString != "" && decryptSuccess {
+					fmt.Print("\n")
+					pterm.Success.Println("Decryption successful!")
+					fmt.Print("\n")
+					fmt.Print("Decrypted Text --> \n\n" + decryptedString)
+				} else {
+					fmt.Print("\n")
+					pterm.Error.Println("Decryption was not successful!")
+				}
+			} else if decType == "Decrypt RSA" {
+				cryptography.DecryptRsa(pathName, dncPass)
+			}
 		}
 	}
 }

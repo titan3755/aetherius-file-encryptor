@@ -19,7 +19,14 @@ func EncryptedFileSave(fileName string, accName string, encryptedData string, en
 		return false, errorMain
 	}
 	var fullPath string
-	// encryptPath := u.HomeDir + "\\documents\\aetherius\\" + accName + "\\encrypted"
+	encryptPath := u.HomeDir + "\\documents\\aetherius\\" + accName + "\\encrypted"
+	if _, err := os.Stat(encryptPath); os.IsNotExist(err) {
+		fileErr := os.Mkdir(encryptPath, 0755)
+		if fileErr != nil {
+			errorMain = "There has been a problem creating the encrypt path!"
+			return false, errorMain
+		}
+	}
 	if encryptionType == "aes" {
 		fullPath = u.HomeDir + "\\documents\\aetherius\\" + accName + "\\encrypted\\" + strings.TrimSpace(fileName) + ".aeta"
 	} else if encryptionType == "rsa" {

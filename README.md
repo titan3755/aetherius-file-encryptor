@@ -1,4 +1,4 @@
-# aetherius-file-encryptor
+# Aetherius File Encryptor
 
 ![repimage](https://i.ibb.co/31CZNzc/Aetherius.png)
 

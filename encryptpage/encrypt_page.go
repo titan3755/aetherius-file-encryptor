@@ -2,7 +2,6 @@ package encryptpage
 
 import (
 	"fmt"
-
 	"example.com/encrypt_tui/cryptography"
 	"example.com/encrypt_tui/utils"
 	"github.com/pterm/pterm"
@@ -58,8 +57,24 @@ func EncryptPage(accName string, encType string) {
 		if encType == "Encrypt With AES" {
 			cipherText, encryptSuccess := cryptography.EncryptAes(pathName, encPass)
 			if cipherText != "" && encryptSuccess {
+				var fileName string
 				fmt.Print("\n")
-				pterm.Success.Println("Encryption successful!\nCipherText: " + cipherText)
+				pterm.Success.Println("Encryption successful!")
+				fmt.Print("\n")
+				pterm.DefaultBasicText.WithStyle(
+					pterm.NewStyle(pterm.FgLightBlue),
+				).Print("> Enter the file name for saving ciphertext ---> ")
+				fmt.Scanln(&fileName)
+				fmt.Print("\n")
+				pterm.Warning.Println("Saving ciphertext ...")
+				cipherTextSavingSuccess, errorMain := utils.EncryptedFileSave(fileName, accName, cipherText, "aes")
+				if cipherTextSavingSuccess {
+					fmt.Print("\n")
+					pterm.Success.Println("CipherText saved successfully!")
+				} else {
+					fmt.Print("\n")
+					pterm.Error.Println("An error occured while saving the ciphertext!\n"+errorMain)
+				}
 			} else {
 				fmt.Print("\n")
 				pterm.Error.Println("Encryption was not successful!")

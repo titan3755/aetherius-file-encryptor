@@ -48,9 +48,19 @@ func DecryptPage(accName string, decType string) {
 					pterm.Success.Println("Decryption successful!")
 					fmt.Print("\n")
 					fmt.Print("Decrypted Text --> \n\n" + decryptedString)
+					fmt.Print("\n")
+					break
 				} else {
 					fmt.Print("\n")
 					pterm.Error.Println("Decryption was not successful!")
+					fmt.Print("\n")
+					fmt.Println("Try again? ")
+					userResponse := utils.Interruptor()
+					if userResponse {
+						continue
+					} else {
+						break
+					}
 				}
 			} else if decType == "Decrypt RSA" {
 				cryptography.DecryptRsa(pathName, dncPass)
